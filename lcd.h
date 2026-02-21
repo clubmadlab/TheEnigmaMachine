@@ -1,0 +1,13 @@
+void InitDisplay();
+void DisplayOn();
+void DisplayOff();
+void ClearDisplay(uint);
+int DrawString(int, int, const char*, uint, uint);
+int DrawDoubleString(int, int, const char*, uint, uint);
+int DrawTripleString(int, int, const char*, uint, uint);
+int DrawChars(int, int, const char*, int, uint, uint);
+int DrawChar(int, int, char, uint, uint);
+int DrawDoubleChar(int, int, char, uint, uint);
+int DrawTripleChar(int, int, char, uint, uint);
+void DrawFont();
+void DrawImage(uint16_t*, int, int);

@@ -1,0 +1,15 @@
+char EncodeLetter(char);
+void UndoStep();
+void InitialiseRotors();
+void InitialiseReflector();
+void InitialisePlugBoard();
+void ResetRotors();
+int SetRotors();
+int SetRings();
+int SetReflector();
+int SetInitialPositions();
+int ShowCurrentPositions();
+int SetPlugBoard();
+void LoadSettings();
+void SaveSettings();
+void SaveFlash(uint32_t, uint8_t*);

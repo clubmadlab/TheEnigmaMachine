@@ -1,0 +1,50 @@
+;****************************************************************************
+; FILE:      lcd.pio														*
+; CONTENTS:  LCD PIO routines												*
+; COPYRIGHT: MadLab Ltd. 2024												*
+; AUTHOR:    James Hutchby													*
+; UPDATED:   28/10/24														*
+;****************************************************************************
+
+
+.program lcd
+.side_set 1
+
+	pull block		side 1
+
+	out X, 1		side 1		; data/command (1 = data, 0 = command)
+	set PINS, 0		side 1
+	jmp !X lbl		side 1
+	set PINS, 1		side 1
+lbl:
+
+	set Y, 7		side 1
+loop:
+	out PINS, 1		side 0
+	jmp Y-- loop	side 1
+
+
+% c-sdk {
+static inline void lcd_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin, uint control_pin, uint16_t div, uint8_t frac)
+{
+	pio_sm_config sm_config = lcd_program_get_default_config(offset);
+
+	sm_config_set_out_pins(&sm_config, data_pin, 1);
+	sm_config_set_set_pins(&sm_config, control_pin, 1);
+	sm_config_set_sideset_pins(&sm_config, clock_pin);
+	uint pin_mask = (1u << data_pin) | (1u << clock_pin) | (1u << control_pin);
+	pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+
+	pio_gpio_init(pio, data_pin);
+	pio_gpio_init(pio, clock_pin);
+	pio_gpio_init(pio, control_pin);
+
+	pio_sm_set_pins_with_mask(pio, sm, (1u << clock_pin), pin_mask);
+
+	sm_config_set_out_shift(&sm_config, false, false, 8);
+	sm_config_set_clkdiv_int_frac(&sm_config, div, frac);
+
+	pio_sm_init(pio, sm, offset, &sm_config);
+	pio_sm_set_enabled(pio, sm, true);
+}
+%}
