@@ -1,4 +1,4 @@
-# TheEnigmaMachine 
+# The Enigma Machine 
 
 An accurate simulation of the M3 Enigma cipher machine used by the German Navy during the Second World War. 
 
